@@ -12,6 +12,7 @@ const mojangData = ref()
 const rankedData = ref()
 const loaded = ref(false)
 const trimmedUUID = ref('')
+const pb = ref('')
 
 fetch(`https://api.ashcon.app/mojang/v2/user/${name}`)
     .then(res => res.json())
@@ -24,6 +25,13 @@ fetch(`https://api.ashcon.app/mojang/v2/user/${name}`)
     .then(res => {
         rankedData.value = res.data
         loaded.value = true
+        let time = res.data.best_record_time
+        const minutes = Math.floor(time / 60000)
+        time -= minutes * 60000
+        const seconds = Math.floor(time / 1000)
+        time -= seconds * 1000
+        const millis = time
+        pb.value = `${minutes}:${seconds.toString().padStart(2, '0')}.${millis.toString().padStart(3, '0')}`
     })
 </script>
 
@@ -34,6 +42,7 @@ fetch(`https://api.ashcon.app/mojang/v2/user/${name}`)
     <p>{{ rankedData.elo_rate }} elo (#{{ rankedData.elo_rank }})</p>
     <p>{{ rankedData.records[2].win }}/{{ rankedData.total_played }} games won (lifetime)</p>
     <p>{{ rankedData.current_winstreak }} current winstreak ({{ rankedData.highest_winstreak }} best winstreak)</p>
+    <p>Ranked PB: {{ pb }}</p>
     <RouterLink :to="`/matches/${mojangData.username}`">Match History</RouterLink>
     <h2>Look up another player</h2>
     <PlayerSearchBar />
