@@ -40,7 +40,7 @@ fetch(`https://api.ashcon.app/mojang/v2/user/${name}`)
     <h1>Stats for {{ mojangData.username }}</h1>
     <img :src="`https://crafatar.com/avatars/${mojangData.uuid}?size=64&overlay`">
     <p>{{ rankedData.elo_rate }} elo (#{{ rankedData.elo_rank }})</p>
-    <p>{{ rankedData.records[2].win }}/{{ rankedData.total_played }} games won (lifetime)</p>
+    <p>{{ rankedData.records[2].win }}/{{ rankedData.records[2].win + rankedData.records[2].lose + rankedData.records[2].draw }} games won</p>
     <p>{{ rankedData.current_winstreak }} current winstreak ({{ rankedData.highest_winstreak }} best winstreak)</p>
     <p>Ranked PB: {{ pb }}</p>
     <RouterLink :to="`/matches/${mojangData.username}`">Match History</RouterLink>
